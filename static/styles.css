@@ -1,0 +1,117 @@
+/* Add styles for the button */
+#showBooksButton {
+    margin: 20px; 
+}
+
+* {
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.highlight-title span {
+    display: inline;
+    background: yellow;
+    color: black;
+    padding: 0;
+    line-height: 1;
+    font-size: 3rem;
+    box-decoration-break: clone;
+}
+
+.book-reviews-title {
+    display: inline;
+    background-color: white;    
+    color: black;
+    font-size: 1rem;         
+    line-height: 1;            
+    padding: 0.1em 0.2em;         
+    border-radius: 0;              
+}
+
+.add-book-title {
+    display: inline-block;     
+    background-color: white;      
+    color: black;
+    font-size: 2rem;              
+    line-height: 1;
+    padding: 0.15em 0.25em;       
+    border-radius: 0;             
+    text-decoration: underline;
+    margin-top: 0.5em;           
+}
+
+
+body{
+    background: #f4f4f4;
+    margin:0;
+    background-image: url('/static/hq720.jpg'); 
+    background-repeat: repeat;
+    background-size: 500px 500px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;     
+    color: white;
+    padding: 20px;
+}
+
+#showBooksButton {
+    margin: 20px 0 20px 0; 
+    display: block;
+    margin-left: 0;   
+    padding: 10px 20px;
+}
+
+.bookshelf {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+    gap: 10px;
+    padding: 0 30px 30px 0;
+    justify-content: start; 
+}
+
+.book-card{
+background: #000000;
+    padding:10px;
+    border-radius:4px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+    text-align:center;
+    transition:transform 0.2s;
+    color: rgb(255, 255, 255);
+}
+
+.book-card:hover{
+    transform:scale(1.05);
+}
+
+.book-cover{
+    width:100%;
+    height:250px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+.author{
+    color:rgb(255, 255, 255);
+}
+
+.reviews-list {
+    margin: 20px 0;
+}
+
+.review-card {
+    margin-bottom: 15px;
+    background: #fff;
+}
+
+.review-card h4 {
+    margin: 0 0 5px 0;
+}
+
+.review-card p {
+    margin: 2px 0;
+}
