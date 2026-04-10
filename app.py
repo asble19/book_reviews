@@ -123,26 +123,28 @@ def get_all_reviews():
 @app.route('/api/add_review', methods=['POST'])
 def add_review():
     try:
-        data = request.get_json()  # Get review details from the request
-        book_id = data.get('book_id')
-        book_title = data.get('book_title') # Additional
-        user = data.get('user')
-        rating = data.get('rating')
-        comment = data.get('comment')
+        data = request.get_json()
 
-        # Insert the review into the MongoDB collection
+        if not data:
+            return jsonify({'error': 'No data received'}), 400
+
         review = {
-            'book_id': book_id,
-            'book_title': book_title,
-            'user': user,
-            'rating': rating,
-            'comment': comment
+            'book_id': data.get('book_id'),
+            'book_title': data.get('book_title'),
+            'user': data.get('user'),
+            'rating': data.get('rating'),
+            'comment': data.get('comment')
         }
+
+        if not review['book_title'] or not review['user']:
+            return jsonify({'error': 'Missing required fields'}), 400
+
         reviews_collection.insert_one(review)
 
         return jsonify({'message': 'Review added successfully'})
+
     except Exception as e:
-        return jsonify({'error': str(e)})
+        return jsonify({'error': str(e)}), 500
     
 
 # Optional: Get all authors

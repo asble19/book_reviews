@@ -163,9 +163,17 @@ function loadReviews() {
     fetch("/api/reviews")
         .then(res => res.json())
         .then(data => {
+
             reviewList.innerHTML = "";
 
-            if (!data.reviews || data.reviews.length === 0) {
+            // handle backend error safely
+            if (!data.reviews) {
+                reviewList.innerHTML = "<p>Something went wrong loading reviews.</p>";
+                return;
+            }
+
+            // "empty list" check
+            if (data.reviews.length === 0) {
                 reviewList.innerHTML = "<p>No reviews found.</p>";
                 return;
             }
@@ -184,6 +192,10 @@ function loadReviews() {
 
                 reviewList.appendChild(div);
             });
+        })
+        .catch(err => {
+            console.error(err);
+            reviewList.innerHTML = "<p>Error loading reviews.</p>";
         });
 }
 
@@ -198,12 +210,34 @@ function submitReview() {
 
     fetch("/api/add_review", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: {
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify(reviewData)
     })
     .then(res => res.json())
-    .then(() => {
-        if (reviewsVisible) loadReviews();
+    .then(data => {
+        console.log("SERVER RESPONSE:", data);
+
+        if (data.error) {
+            alert("Error: " + data.error);
+            return;
+        }
+
+        alert("Review submitted!");
+
+        // refresh if visible
+        loadReviews();
+
+        // clear form
+        document.getElementById("reviewBookTitle").value = "";
+        document.getElementById("reviewUser").value = "";
+        document.getElementById("reviewRating").value = "";
+        document.getElementById("reviewComment").value = "";
+    })
+    .catch(err => {
+        console.error("Submit failed:", err);
+        alert("Failed to submit review");
     });
 }
 
