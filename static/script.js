@@ -217,18 +217,48 @@ function submitReview() {
         const data = await res.json();
         console.log("SERVER RESPONSE:", data);
 
+        const msg = document.getElementById("reviewMessage");
+
         if (!res.ok) {
-            alert("Error: " + (data.error || "Unknown error"));
+            msg.style.color = "red";
+            msg.innerText = "Error: " + (data.error || "Failed to submit review");
+
+            setTimeout(() => {
+                msg.innerText = "";
+            }, 3000);
+
             return;
         }
 
-        alert("Review submitted!");
+        // success message
+        msg.style.color = "green";
+        msg.innerText = "Review submitted successfully!";
 
-        loadReviews();
+        setTimeout(() => {
+            msg.innerText = "";
+        }, 3000);
+
+        // clear inputs
+        document.getElementById("reviewBookTitle").value = "";
+        document.getElementById("reviewUser").value = "";
+        document.getElementById("reviewRating").value = "";
+        document.getElementById("reviewComment").value = "";
+
+        // refresh reviews if visible
+        if (reviewsVisible) {
+            loadReviews();
+        }
     })
     .catch(err => {
         console.error("FETCH FAILED:", err);
-        alert("Request failed");
+
+        const msg = document.getElementById("reviewMessage");
+        msg.style.color = "red";
+        msg.innerText = "Request failed";
+
+        setTimeout(() => {
+            msg.innerText = "";
+        }, 3000);
     });
 }
 
