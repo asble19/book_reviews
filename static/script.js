@@ -206,3 +206,11 @@ function submitReview() {
         if (reviewsVisible) loadReviews();
     });
 }
+
+// auto-expand textarea
+const commentBox = document.getElementById("reviewComment");
+
+commentBox.addEventListener("input", function () {
+    this.style.height = "auto";              // reset height
+    this.style.height = this.scrollHeight + "px"; // expand to fit content
+});
