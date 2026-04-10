@@ -208,6 +208,8 @@ function submitReview() {
         comment: document.getElementById("reviewComment").value
     };
 
+    console.log("SENDING REVIEW:", reviewData);
+
     fetch("/api/add_review", {
         method: "POST",
         headers: {
@@ -215,29 +217,22 @@ function submitReview() {
         },
         body: JSON.stringify(reviewData)
     })
-    .then(res => res.json())
-    .then(data => {
+    .then(async res => {
+        const data = await res.json();
         console.log("SERVER RESPONSE:", data);
 
-        if (data.error) {
-            alert("Error: " + data.error);
+        if (!res.ok) {
+            alert("Error: " + (data.error || "Unknown error"));
             return;
         }
 
         alert("Review submitted!");
 
-        // refresh if visible
         loadReviews();
-
-        // clear form
-        document.getElementById("reviewBookTitle").value = "";
-        document.getElementById("reviewUser").value = "";
-        document.getElementById("reviewRating").value = "";
-        document.getElementById("reviewComment").value = "";
     })
     .catch(err => {
-        console.error("Submit failed:", err);
-        alert("Failed to submit review");
+        console.error("FETCH FAILED:", err);
+        alert("Request failed");
     });
 }
 

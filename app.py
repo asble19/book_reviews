@@ -125,6 +125,8 @@ def add_review():
     try:
         data = request.get_json()
 
+        print("RECEIVED REVIEW:", data)  # 👈 ADD THIS
+
         if not data:
             return jsonify({'error': 'No data received'}), 400
 
@@ -135,9 +137,6 @@ def add_review():
             'rating': data.get('rating'),
             'comment': data.get('comment')
         }
-
-        if not review['book_title'] or not review['user']:
-            return jsonify({'error': 'Missing required fields'}), 400
 
         reviews_collection.insert_one(review)
 
