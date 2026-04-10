@@ -135,7 +135,7 @@ function showReviews() {
                     <h4>Book: ${review.book_title}</h4>
                     <p><strong>User:</strong> ${review.user}</p>
                     <p><strong>Rating:</strong> ${review.rating}</p>
-                    <p>${review.review_text}</p>
+                    <p>${review.comment}</p>
                     <hr>
                 `;
 
@@ -145,4 +145,64 @@ function showReviews() {
         .catch(error => {
             console.error('Error fetching reviews:', error);
         });
+}
+
+// -------------------- REVIEWS --------------------
+let reviewsVisible = false;
+
+// toggle reviews (no duplicate buttons, no old function)
+function toggleReviews() {
+    reviewsVisible = !reviewsVisible;
+    loadReviews();
+}
+
+// load reviews
+function loadReviews() {
+    const reviewList = document.getElementById("reviewsList");
+
+    fetch("/api/reviews")
+        .then(res => res.json())
+        .then(data => {
+            reviewList.innerHTML = "";
+
+            if (!data.reviews || data.reviews.length === 0) {
+                reviewList.innerHTML = "<p>No reviews found.</p>";
+                return;
+            }
+
+            data.reviews.forEach(review => {
+                const div = document.createElement("div");
+                div.className = "review-card";
+
+                div.innerHTML = `
+                    <h4>${review.book_title}</h4>
+                    <p><b>User:</b> ${review.user}</p>
+                    <p><b>Rating:</b> ${review.rating}</p>
+                    <p>${review.comment}</p>
+                    <hr>
+                `;
+
+                reviewList.appendChild(div);
+            });
+        });
+}
+
+// submit review
+function submitReview() {
+    const reviewData = {
+        book_title: document.getElementById("reviewBookTitle").value,
+        user: document.getElementById("reviewUser").value,
+        rating: document.getElementById("reviewRating").value,
+        comment: document.getElementById("reviewComment").value
+    };
+
+    fetch("/api/add_review", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(reviewData)
+    })
+    .then(res => res.json())
+    .then(() => {
+        if (reviewsVisible) loadReviews();
+    });
 }

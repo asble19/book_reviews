@@ -1,40 +1,44 @@
 <html>
-
 <head>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-    </style>
     <title>Book Reviews</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
-    <input type="text" id="searchBox" placeholder="Search by title or author">
-    <button onclick="searchBooks()">Search</button>
-    
-    <header class="navbar">
-<h1 class="highlight-title">
-  <span>MY</span>
-  <span>BOOK</span>
-  <span>SHELF</span>
-</h1>
-    </header>
-    
-<!-- Button to show reviews -->
-<button id="showReviewsButton" onclick="showReviews()">BOOK REVIEWS - UPDATE</button>
 
-<!-- Div to display reviews -->
-<div id="reviewsList" class="reviews-list">
-    <!-- Reviews will appear here dynamically -->
+<input type="text" id="searchBox" placeholder="Search by title or author">
+<button onclick="searchBooks()">Search</button>
+
+<header class="navbar">
+    <h1 class="highlight-title">
+        <span>MY</span>
+        <span>BOOK</span>
+        <span>SHELF</span>
+    </h1>
+</header>
+
+<!-- WRITE REVIEW (UPDATED STYLE) -->
+<div id="addReview">
+    <h2 class="review-title">WRITE A REVIEW</h2>
+
+    <input type="text" id="reviewBookTitle" placeholder="Book Title">
+    <input type="text" id="reviewUser" placeholder="Your Name">
+    <input type="number" id="reviewRating" placeholder="Rating (1-5)">
+    <input type="text" id="reviewComment" placeholder="Comment">
+
+    <button onclick="submitReview()">Submit Review</button>
 </div>
 
-    <!-- Add a div to input book data -->
+<!-- ONLY ONE BUTTON -->
+<button onclick="toggleReviews()">Show Reviews</button>
+
+<!-- SINGLE REVIEW CONTAINER -->
+<div id="reviewsList" class="reviews-list"></div>
+
+<!-- ADD BOOK -->
 <div id="addBook">
     <h2 class="add-book-title">ADD A BOOK</h2>
-    <!-- Inputs in a row -->
+
     <div class="book-inputs-row">
         <input type="text" id="bookTitle" placeholder="Book Title">
         <input type="text" id="publicationYear" placeholder="Publication Year">
@@ -44,20 +48,10 @@
     </div>
 </div>
 
-    <!-- Display books in this div -->
-    <div id="bookList">
-        <!-- Book data will be displayed here dynamically -->
-    </div>
+<button id="showBooksButton" onclick="showAllBooks()">Show All Books</button>
 
-    <button id="showBooksButton" onclick="showAllBooks()">Show All Books</button>
+<div id="bookshelf" class="bookshelf"></div>
 
-    <!-- Display books in this div -->
-    <div id="bookshelf" class="bookshelf">
-        <!-- Book data will be displayed here dynamically -->
-    </div>
-
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
-
 </html>

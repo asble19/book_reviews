@@ -1,9 +1,19 @@
 from pymongo import MongoClient
 from flask import Flask, jsonify, render_template, request
 import sqlite3
+import os
+from dotenv import load_dotenv
 
-# MongoDB connection
-client = MongoClient("mongodb+srv://asble19:<db_password>@cluster0.ukwzfcn.mongodb.net/?appName=Cluster0")
+# ---------------------- MongoDB Setup ----------------------
+
+load_dotenv()
+
+MONGO_URI = os.getenv("MONGO_URI")
+
+if not MONGO_URI:
+    raise Exception("MONGO_URI environment variable not set")
+
+client = MongoClient(MONGO_URI)
 mongo_db = client["book_reviews_db"]
 reviews_collection = mongo_db["reviews"]
 
@@ -154,7 +164,5 @@ def index():
     return render_template('index.html')
 
 # ---------------------- Run App ----------------------
-import os
-
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
