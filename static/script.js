@@ -150,30 +150,30 @@ function showReviews() {
 // -------------------- REVIEWS --------------------
 let reviewsVisible = false;
 
-// toggle reviews (no duplicate buttons, no old function)
 function toggleReviews() {
-    reviewsVisible = !reviewsVisible;
-    loadReviews();
+    const reviewsDiv = document.getElementById("reviewsList");
+
+    if (!reviewsVisible) {
+        // show + load
+        reviewsVisible = true;
+        reviewsDiv.style.display = "block";
+        loadReviews();
+    } else {
+        // hide
+        reviewsVisible = false;
+        reviewsDiv.style.display = "none";
+    }
 }
 
 // load reviews
 function loadReviews() {
-    const reviewList = document.getElementById("reviewsList");
-
     fetch("/api/reviews")
         .then(res => res.json())
         .then(data => {
-
+            const reviewList = document.getElementById("reviewsList");
             reviewList.innerHTML = "";
 
-            // handle backend error safely
-            if (!data.reviews) {
-                reviewList.innerHTML = "<p>Something went wrong loading reviews.</p>";
-                return;
-            }
-
-            // "empty list" check
-            if (data.reviews.length === 0) {
+            if (!data.reviews || data.reviews.length === 0) {
                 reviewList.innerHTML = "<p>No reviews found.</p>";
                 return;
             }
@@ -192,10 +192,6 @@ function loadReviews() {
 
                 reviewList.appendChild(div);
             });
-        })
-        .catch(err => {
-            console.error(err);
-            reviewList.innerHTML = "<p>Error loading reviews.</p>";
         });
 }
 
